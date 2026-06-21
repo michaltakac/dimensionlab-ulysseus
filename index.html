@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="en" class="dl-deck">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>From Simulation to Agents — DimensionLab · Ulysseus 2026</title>
+    <meta name="description" content="DimensionLab's journey in human-centred AI for bioengineering — Ulysseus HERO / AWAKE virtual lecture, 22 June 2026." />
+
+    <link rel="stylesheet" href="vendor/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="vendor/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="styles/theme.css" />
+    <link rel="icon" type="image/png" href="assets/logos/dimensionlab-d-outline.png" />
+  </head>
+  <body class="dl-deck">
+
+    <!-- Persistent header logo (top-right corner per brief) -->
+    <div class="dl-header" aria-hidden="true">
+      <span class="dl-meta">Ulysseus BIP · HERO &amp; AWAKE · 22 Jun 2026</span>
+      <span class="dl-mark" title="DimensionLab">
+        <svg width="26" height="26" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="dlg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#4f46e5" />
+              <stop offset="60%" stop-color="#8b5cf6" />
+              <stop offset="100%" stop-color="#c026d3" />
+            </linearGradient>
+          </defs>
+          <!-- Outer rounded D shape -->
+          <path d="M10 8 H34 a22 22 0 0 1 0 44 H10 Z" fill="none" stroke="url(#dlg)" stroke-width="3.5" stroke-linejoin="round" />
+          <!-- Inner D with isometric base -->
+          <path d="M19 20 H32 a12 12 0 0 1 0 24 H19 Z" fill="none" stroke="#0f172a" stroke-width="2.2" stroke-linejoin="round" />
+          <path d="M19 44 L13 52 H38 a18 18 0 0 0 14 -6" fill="none" stroke="#0f172a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" />
+        </svg>
+        DimensionLab
+      </span>
+    </div>
+
+    <!-- Footer accent -->
+    <div class="dl-footer" aria-hidden="true">
+      <span>Human-centred AI for bioengineering · dimensionlab.org</span>
+      <span class="dl-bar"></span>
+      <span class="dl-slide-number"><span id="dl-current">1</span> / <span id="dl-total">1</span></span>
+    </div>
+
+    <div class="reveal">
+      <div class="slides">
+
+        <!-- ============================================================
+             ACT 0 — OPENING
+             ============================================================ -->
+
+        <!-- Slide 0 — Title -->
+        <section data-state="dl-title">
+          <div class="dl-hero">
+            <span class="dl-eyebrow">Ulysseus BIP · HERO &amp; AWAKE · 22 June 2026</span>
+            <h1>From Simulation to <span class="accent">Agents</span></h1>
+            <p class="dl-byline" style="font-size:0.66em; font-weight:600; color:var(--dl-ink);">DimensionLab's Journey in Human-Centred AI for Bioengineering</p>
+            <div class="dl-meta-row">
+              <span><strong>Michal Takáč, PhD</strong><br/>Co-founder, DimensionLab</span>
+              <span><strong>22 June 2026</strong><br/>11:00 – 12:30 CET</span>
+              <span><strong>Audience</strong><br/>Engineers · Clinicians · Researchers</span>
+            </div>
+          </div>
+          <aside class="notes">
+            Title slide. Welcome everyone to the Ulysseus BIP session. Frame in one line: this is a candid story of how a deep-tech AI company went from physics simulation to human-centred AI for surgery — what worked, what we sunset, and what we are building now.
+          </aside>
+        </section>
+
+        <!-- Slide 1 — Thesis -->
+        <section>
+          <div class="dl-bigquote">
+            <p>In deep-tech AI, the hard part is not the model.<br/>It is the <span class="accent">human system around it</span> — fellow engineers, customers, regulators, and ultimately clinicians and patients — and whether they can trust what you built.</p>
+            <div class="dl-bigquote-cite">— our thesis for the next 90 minutes</div>
+          </div>
+          <aside class="notes">
+            This is the single sentence I want you to remember. Everything that follows — the platform we built, the platform we sunset, the platform we are building now — is a story about earning trust at increasing stakes.
+          </aside>
+        </section>
+
+        <!-- ============================================================
+             ACT 1 — WHY DIMENSIONLAB EXISTS
+             ============================================================ -->
+
+        <section class="dl-section">
+          <span class="dl-section-num">01 · Origin</span>
+          <h1>Engineering <span class="accent">physical things</span> is painfully slow.</h1>
+          <p class="dl-section-sub">Simulation should be the superpower for anyone who builds physical things — across energy, mobility, industry, and research. Most of the time, it isn't.</p>
+          <div class="dl-divider"></div>
+          <aside class="notes">
+            Section divider. Set up the problem space DimensionLab was founded to attack: virtual prototyping is the most leveraged tool we have for physical products — and it is still measured in weeks and months.
+          </aside>
+        </section>
+
+        <!-- Slide 5 — The simulation bottleneck -->
+        <section>
+          <span class="dl-eyebrow">The bottleneck</span>
+          <h2>Virtual prototyping still takes weeks to months.</h2>
+          <div class="dl-grid-2" style="margin-top:18px;">
+            <div>
+              <ul class="dl-list-clean">
+                <li><strong>Expert mesh setup</strong> for every geometry change — hours to days of skilled labour.</li>
+                <li><strong>Long HPC solves</strong> for CFD, FEA, multiphysics — minutes to weeks per run.</li>
+                <li><strong>Iteration is expensive</strong> — so most teams iterate too little, too late.</li>
+                <li><strong>Tools are inaccessible</strong> to most domain experts — the engineers, designers, and scientists closest to the problem.</li>
+              </ul>
+            </div>
+            <div>
+              <div class="dl-callout">
+                <strong>Why iteration speed is everything.</strong> Every geometry change that takes days is a design decision deferred. Teams that can only afford a handful of runs converge on "good enough", not "best" — and that gap compounds across the life of a product.
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            Anchor the pain in iteration economics — this is the universal bottleneck across every engineering vertical we served. Keep it general here; we will see later how this exact problem reappears, with far higher stakes, once we move into the clinic.
+          </aside>
+        </section>
+
+        <!-- Slide 6 — Our bet -->
+        <section>
+          <span class="dl-eyebrow">DimensionLab's founding bet (2021)</span>
+          <h2>Make physics simulation <em>learnable</em>, <em>fast</em>, and <em>accessible</em>.</h2>
+          <div class="dl-grid-3" style="margin-top:18px;">
+            <div class="dl-card">
+              <div class="dl-card-label">Learnable</div>
+              <h3>Train a model, run physics in milliseconds</h3>
+              <p>AI surrogate models — PINNs, FNOs, GNNs — that learn the physics once and infer near-instantly.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Fast</div>
+              <h3>Cloud GPUs in three clicks</h3>
+              <p>Hide the HPC plumbing. A no-code visual editor, dockerized training, in-browser visualization.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Accessible</div>
+              <h3>For engineers and scientists, not ML PhDs</h3>
+              <p>UX rethink for a much wider user base — the same shift that happened in graphics, then in data.</p>
+            </div>
+          </div>
+          <aside class="notes">
+            Three pillars. Make clear this was 2021–2022 — well before "AI for science" became a press cycle. The bet was that the bottleneck was UX and trust, not raw model capability.
+          </aside>
+        </section>
+
+        <!-- ============================================================
+             ACT 2 — THE SIML.AI CHAPTER
+             ============================================================ -->
+
+        <section class="dl-section">
+          <span class="dl-section-num">02 · The Siml.ai chapter</span>
+          <h1>We built a platform for <span class="accent">AI physics simulators</span>.</h1>
+          <p class="dl-section-sub">A full-stack product — visual editor, cloud training, interactive 3D viewer — powered by NVIDIA Modulus and Unreal Pixel Streaming.</p>
+          <div class="dl-divider"></div>
+          <aside class="notes">
+            Transition into the product chapter. Frame Siml.ai not as a demo, but as a real product system with frontend, backend, training infra, and a streamed visualization layer.
+          </aside>
+        </section>
+
+        <!-- Slide 8 — Siml.ai platform overview -->
+        <section>
+          <div class="dl-grid-2-3">
+            <div>
+              <span class="dl-eyebrow">Siml.ai · platform overview</span>
+              <h2>One platform, three jobs.</h2>
+              <ul class="dl-list-clean" style="margin-top:14px;">
+                <li><strong>Model Engineer</strong> — no-code / low-code visual editor to design a physics simulator.</li>
+                <li><strong>SITE</strong> — Simulator Inference &amp; Training Environment running on cloud GPUs.</li>
+                <li><strong>Simulation Studio</strong> — high-fidelity interactive 3D viewer, streamed from the cloud.</li>
+              </ul>
+            </div>
+            <div class="dl-img-frame">
+              <img src="assets/images/simlai-platform-mar-2024.png" alt="Siml.ai platform overview" />
+              <div class="dl-img-caption">Siml.ai web platform — projects, simulators, datasets, environments.</div>
+            </div>
+          </div>
+          <aside class="notes">
+            For the engineers: this maps to a React/TypeScript client (simlai-client), a Django/PostgreSQL/Celery API (simlai-api), a containerized training + inference service (SITE) running NVIDIA Modulus, and an Unreal Engine viewer (simulation-studio) streamed via Pixel Streaming. The headline for everyone in the room: this was a real production system serving paying engineering customers, not a notebook.
+          </aside>
+        </section>
+
+        <!-- Slide 9 — The maths in one slide -->
+        <section>
+          <span class="dl-eyebrow">The core idea — physics-informed neural networks</span>
+          <h2>Bake the physics into the loss.</h2>
+          <div class="dl-grid-2" style="margin-top:14px;">
+            <div>
+              <p style="font-size:0.7em; color:var(--dl-muted);">A PINN learns a field <code>u(x,t)</code> by minimising a loss that includes the residual of the governing PDE itself — e.g. Navier–Stokes, elasticity, heat — alongside boundary and data terms.</p>
+              <div class="dl-card" style="margin-top:14px; font-family: 'JetBrains Mono', monospace; font-size:0.55em;">
+                <span class="dl-card-label">Loss</span>
+                <div style="color:var(--dl-ink); line-height:1.6;">
+                  L = L<sub>data</sub> + λ<sub>1</sub>·L<sub>PDE</sub> + λ<sub>2</sub>·L<sub>BC</sub> + λ<sub>3</sub>·L<sub>IC</sub>
+                </div>
+              </div>
+              <p style="font-size:0.55em; color:var(--dl-muted); margin-top:14px;">Train once on a parameterised family of geometries / conditions. Inference becomes <strong>milliseconds to seconds</strong>, instead of hours.</p>
+            </div>
+            <div>
+              <ul class="dl-list-clean">
+                <li><strong>Extrapolates</strong> beyond training data — physics constrains the solution space.</li>
+                <li><strong>Interpretable</strong> — parameters have physical meaning.</li>
+                <li><strong>Data-efficient</strong> — physics fills in the gaps where measured data is scarce or expensive to obtain.</li>
+                <li><strong>Architectures we use</strong> — PINNs, Fourier networks &amp; FNOs, modified Fourier networks, SIREN, DeepONets, MeshGraphNets.</li>
+              </ul>
+            </div>
+          </div>
+          <aside class="notes">
+            Keep this slide short. The equation form is enough to anchor the engineers. The punchline for everyone: this is not a black-box LLM — the physics lives in the loss, so the model has structure we can reason about. That structural reasoning becomes a real asset later, when stakes and validation requirements rise in the medical chapter.
+          </aside>
+        </section>
+
+        <!-- Slide 10 — Model Engineer -->
+        <section>
+          <div class="dl-grid-2">
+            <div>
+              <span class="dl-eyebrow">Model Engineer</span>
+              <h2>Build a simulator the way you'd build a Figma file.</h2>
+              <ul class="dl-list-clean" style="margin-top:14px;">
+                <li><strong>Geometry, Equation, Dataset, Constraint, Neural Net</strong> nodes — drag, drop, connect.</li>
+                <li><strong>One-click cloud training</strong> on pre-provisioned GPU tiers.</li>
+                <li><strong>Live training dashboards</strong> — loss curves, convergence, hardware usage.</li>
+              </ul>
+              <div class="dl-callout">
+                Built on NVIDIA Modulus under the hood — but a CFD engineer should never have to write a Modulus config file.
+              </div>
+            </div>
+            <div class="dl-img-frame">
+              <img src="assets/images/simlai-visual-ui.png" alt="Siml.ai Model Engineer — node-based editor" />
+              <div class="dl-img-caption">Node-based simulator editor inside Siml.ai Model Engineer.</div>
+            </div>
+          </div>
+          <aside class="notes">
+            This is where we put the most HCI design energy. The thesis: lower the cognitive cost of expressing a physics problem, and you let domain experts (not ML experts) do the work.
+          </aside>
+        </section>
+
+        <!-- Slide 11 — Simulation Studio -->
+        <section>
+          <div class="dl-grid-3-2">
+            <div class="dl-img-frame">
+              <img src="assets/images/simulation-studio-car.png" alt="Simulation Studio — car aerodynamics" />
+              <div class="dl-img-caption">Car aerodynamics — interactive vector field rendering, slicing, live re-inference.</div>
+            </div>
+            <div>
+              <span class="dl-eyebrow">Simulation Studio</span>
+              <h2>A 3D viewer, streamed from the cloud.</h2>
+              <ul class="dl-list-clean" style="margin-top:14px;">
+                <li><strong>Unreal Engine</strong> rendering, <strong>Pixel Streaming</strong> WebRTC transport.</li>
+                <li><strong>Point cloud &amp; vector field</strong> rendering, slice filters, in-situ remeshing.</li>
+                <li><strong>Parameterised inputs</strong> — change boundary conditions, re-run inference in seconds.</li>
+              </ul>
+            </div>
+          </div>
+          <aside class="notes">
+            Why Unreal? Because for interactive engineering visualization you want a real-time renderer. Pixel Streaming meant the heavy GPU stayed in the cloud and the user only needed a browser. This same pipeline is what made the clinical UI for CrAInial conceivable later.
+          </aside>
+        </section>
+
+        <!-- Slide 12 — Modulus & infra stack -->
+        <section>
+          <span class="dl-eyebrow">Under the hood</span>
+          <h2>NVIDIA Modulus, Dockerized, on cloud GPUs.</h2>
+          <div class="dl-grid-3" style="margin-top:18px;">
+            <div class="dl-card">
+              <div class="dl-card-label">Frontend</div>
+              <h3>React + TypeScript</h3>
+              <p>Visual editor, project workspace, dataset &amp; environment management. Auth0 SSO.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Backend</div>
+              <h3>Django · PostgreSQL · Celery</h3>
+              <p>Project &amp; user data, async training jobs, Stripe billing, periodic tasks.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Training &amp; inference</div>
+              <h3>SITE on NVIDIA Modulus</h3>
+              <p>Containerized training service, multi-GPU scheduler, FastAPI inference endpoints, Trame + Panel apps.</p>
+            </div>
+          </div>
+          <div class="dl-callout">
+            Lesson for builders in the room: a deep-tech platform is <strong>at least three products in a trench coat</strong> — a frontend, a backend, and a compute fabric. Each one has its own users and its own failure modes.
+          </div>
+          <aside class="notes">
+            Mention briefly that this is the architecture audience members can find in our public simlai-docs repository if they want to study it. Don't oversell — be honest about complexity.
+          </aside>
+        </section>
+
+        <!-- Slide 13 — Quantitative claims -->
+        <section>
+          <span class="dl-eyebrow">What this unlocked</span>
+          <h2>Hours instead of weeks. Sometimes seconds.</h2>
+          <div class="dl-stats" style="margin-top:18px; grid-template-columns: 1fr 1.4fr 0.7fr 1fr; gap:18px;">
+            <div class="dl-stat">
+              <div class="dl-stat-value">~1000×</div>
+              <div class="dl-stat-label">faster than traditional FEM on bone-fixator stress prediction.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">~50,000×</div>
+              <div class="dl-stat-label">faster simulation inference compared to baseline CFD in our internal benchmarks.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">3 clicks</div>
+              <div class="dl-stat-label">to launch GPU training in the cloud from a fresh project.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">2,400+</div>
+              <div class="dl-stat-label">early-adopter users across academia and industry by 2024.</div>
+            </div>
+          </div>
+          <div class="dl-callout">
+            <strong>Be careful with these numbers.</strong> They are real, but case-specific. The point is not "AI beats CFD". The point is that for the right family of problems, the cost of one extra simulation drops to near-zero — and that changes what an engineer can <em>do</em> in a single workday.
+          </div>
+          <aside class="notes">
+            Show humility on the numbers. Anybody in CFD will (rightly) push back on "50,000×" without context. The honest message is about iteration economics, not a single benchmark.
+          </aside>
+        </section>
+
+        <!-- Slide 14 — Case study: bone fixator -->
+        <section>
+          <div class="dl-grid-2-3">
+            <div>
+              <span class="dl-eyebrow">Case · biomechanics engineering</span>
+              <h2>Bone-fixator stress, in milliseconds.</h2>
+              <ul class="dl-list-clean" style="margin-top:14px;">
+                <li><strong>~1000× faster</strong> than the FEM baseline the engineering team relied on.</li>
+                <li><strong>~98% cost reduction</strong> per design iteration.</li>
+                <li><strong>No mesh, no ML expert</strong> required — design engineers can sweep parameters themselves.</li>
+              </ul>
+              <div class="dl-callout">
+                First time we watched an engineering team iterate on a real device design in a single working session — not one overnight FEA run.
+              </div>
+            </div>
+            <div class="dl-img-frame">
+              <img src="assets/images/tibia-bone-pinn.png" alt="Tibia fixator PINN — von Mises stress visualization" />
+              <div class="dl-img-caption">Tibia fixator — von Mises stress field predicted by a trained PINN surrogate.</div>
+            </div>
+          </div>
+          <aside class="notes">
+            This biomechanics case was one of several engineering verticals Siml.ai served — but in hindsight it was the bridge to our later pivot. Watching how much faster a device-design loop could run is what first pulled our attention toward medical devices.
+          </aside>
+        </section>
+
+        <!-- Slide 15 — Case study: cardiovascular -->
+        <section>
+          <div class="dl-grid-3-2">
+            <div class="dl-img-frame">
+              <img src="assets/images/aneurysm-omniverse.jpeg" alt="Intracranial aneurysm CFD visualization" />
+              <div class="dl-img-caption">Intracranial aneurysm — streamlines and pressure field, rendered in NVIDIA Omniverse.</div>
+            </div>
+            <div>
+              <span class="dl-eyebrow">Case · cardiovascular research</span>
+              <h2>Aneurysm haemodynamics on demand.</h2>
+              <ul class="dl-list-clean" style="margin-top:14px;">
+                <li><strong>Anatomical geometry</strong> from segmented CT — the same data pipeline we would later reuse for CrAInial.</li>
+                <li><strong>Trained once</strong> on a parameterised family — inferred per geometry in seconds.</li>
+                <li><strong>Interactive viewer</strong> — researchers can explore "what if" scenarios in seconds, not weeks.</li>
+              </ul>
+            </div>
+          </div>
+          <aside class="notes">
+            A research-grade demonstration, not a clinical product. Highlight the data-pipeline parallel: CT → segmentation → AI inference → interactive 3D. That stack — proven here on an engineering/research problem — is exactly what we later focused on cranial implants after the pivot.
+          </aside>
+        </section>
+
+        <!-- Slide 16 — Customer voice -->
+        <section>
+          <div class="dl-grid-2-3">
+            <div>
+              <div class="dl-bigquote">
+                <p>"What used to take us <span class="accent">four years in ANSYS</span> we did with <span class="accent">six AI simulators in three weeks</span> — 100 compute hours per iteration collapsed to six seconds."</p>
+                <div class="dl-bigquote-cite">— Pavol Breza, RFB s.r.o. (river hydroplant simulator)</div>
+              </div>
+            </div>
+            <div>
+              <ul class="dl-list-clean">
+                <li><strong>~96% cost reduction</strong> on the simulation work for the project.</li>
+                <li><strong>Iteration time</strong> went from weeks to single working sessions.</li>
+                <li><strong>Trust came from validation</strong> against the original ANSYS runs they already owned.</li>
+              </ul>
+              <div class="dl-callout">
+                Trust is not built by a faster number. It is built by showing the same answer faster than the tool they already believe.
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            Use the quote to introduce the trust theme that we'll come back to at the end with regulation. This is also a candid lesson: in deep tech, your reference customers' incumbent tools are part of your trust chain — you must validate against them.
+          </aside>
+        </section>
+
+        <!-- Slide 17 — Where Siml.ai landed -->
+        <section>
+          <span class="dl-eyebrow">Where the platform landed</span>
+          <h2>A real product. A real lesson.</h2>
+          <div class="dl-grid-2" style="margin-top:18px;">
+            <div>
+              <ul class="dl-list-clean">
+                <li><strong>2,400+ registered users</strong> by end of 2024 — meaningful early-adopter density.</li>
+                <li><strong>Paying customers in EU industry</strong> — hydropower, structural, biomedical.</li>
+                <li><strong>~€40k revenue in 2024</strong> — real money, not a venture-scale trajectory yet.</li>
+                <li><strong>€970k raised</strong> (pre-seed + grants) across the Siml.ai chapter.</li>
+              </ul>
+            </div>
+            <div>
+              <div class="dl-callout">
+                <strong>The honest read.</strong> The technology worked. The platform attracted users. But a horizontal AI-simulation platform sold to a fragmented engineering market is a <em>very</em> hard go-to-market — and we did not find a repeatable enterprise motion fast enough to justify scaling.
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            Stay candid. Students respect honesty more than spin. The audience here will become founders, clinicians, and policymakers — they should hear what works and what doesn't.
+          </aside>
+        </section>
+
+        <!-- ============================================================
+             ACT 3 — WHAT WE LEARNED
+             ============================================================ -->
+
+        <section class="dl-section">
+          <span class="dl-section-num">03 · Candid lessons</span>
+          <h1>Deep-tech is a <span class="accent">trust</span> business, not a code business.</h1>
+          <p class="dl-section-sub">What worked, what didn't, and what we carried into the next chapter.</p>
+          <div class="dl-divider"></div>
+          <aside class="notes">
+            Section divider. Slow down here — this is the most useful part for the students.
+          </aside>
+        </section>
+
+        <!-- Slide 19 — What worked -->
+        <section>
+          <span class="dl-eyebrow">What worked</span>
+          <h2>Five things we'd do again.</h2>
+          <ul class="dl-list-clean" style="margin-top:18px;">
+            <li><strong>Build the visualization story early.</strong> A streamed 3D viewer earned more trust than any benchmark table.</li>
+            <li><strong>Co-develop with one real domain user.</strong> RFB's hydroplant work taught us more than ten polite enterprise calls.</li>
+            <li><strong>Validate against the tool they already trust.</strong> Not "AI vs CFD" — "AI matches the CFD you already paid for".</li>
+            <li><strong>Hire engineers who write production code <em>and</em> read PDE papers.</strong> Those people are rare and worth the search.</li>
+            <li><strong>Stay close to NVIDIA.</strong> Modulus, Omniverse, and the developer community gave us leverage we could not have built alone.</li>
+          </ul>
+          <aside class="notes">
+            Read each line slowly. Students should feel this is non-obvious lived knowledge, not a LinkedIn carousel.
+          </aside>
+        </section>
+
+        <!-- Slide 20 — What broke -->
+        <section>
+          <span class="dl-eyebrow">What broke — and why we sunset the horizontal platform</span>
+          <h2>Five things we wish we had named earlier.</h2>
+          <ul class="dl-list-clean" style="margin-top:14px;">
+            <li><strong>Horizontal platforms need horizontal trust.</strong> Every new vertical re-starts the validation conversation from zero.</li>
+            <li><strong>"Faster" is not a buyer.</strong> Procurement buys insurance, not speed — until you map ROI to <em>their</em> bottleneck.</li>
+            <li><strong>Self-serve and enterprise pull in opposite directions.</strong> Trying to win both at 10 people is a quiet way to win neither.</li>
+            <li><strong>Cloud GPU spend kills you slowly.</strong> Your unit economics live or die on training run efficiency.</li>
+            <li><strong>Founders are the validation surface.</strong> Until you have certification, your CV <em>is</em> the regulatory pathway.</li>
+          </ul>
+          <aside class="notes">
+            This is the slide that lands with HERO/AWAKE students designing their own ventures. Pause for a moment on "founders are the validation surface" — link it to the next chapter where regulatory pathway becomes literal.
+          </aside>
+        </section>
+
+        <!-- Slide 21 — The pivot moment -->
+        <section>
+          <div class="dl-bigquote">
+            <p>"We don't need a platform for every physics problem.<br/>We need to take everything we learned and <span class="accent">go all-in on one</span> — the single problem where being right matters most — and earn the right to be trusted there first."</p>
+            <div class="dl-bigquote-cite">— internal note, Q3 2025 · the decision to focus</div>
+          </div>
+          <aside class="notes">
+            This was the actual reframe. Plural ambitions, single execution. From here, every conversation got easier — not because the work got smaller, but because the audience became sharper.
+          </aside>
+        </section>
+
+        <!-- ============================================================
+             ACT 4 — THE PIVOT
+             ============================================================ -->
+
+        <section class="dl-section">
+          <span class="dl-section-num">04 · The pivot</span>
+          <h1>From Siml.ai to <span class="accent">CrAInial</span>.</h1>
+          <p class="dl-section-sub">Take everything we learned about physics-aware AI, HCI, and streamed visualization — and aim it at one clinical problem.</p>
+          <div class="dl-divider"></div>
+          <aside class="notes">
+            Transition. Make clear that the technical core is preserved — we did not throw away the work. We focused it.
+          </aside>
+        </section>
+
+        <!-- Slide 23 — Why cranial implants -->
+        <section>
+          <span class="dl-eyebrow">Why cranial implants · why now</span>
+          <h2>A clinical workflow that almost everyone gets wrong.</h2>
+          <div class="dl-stats dl-stats-sm" style="margin-top:14px; grid-template-columns: 0.8fr 0.95fr 1.05fr 1.25fr; gap:18px;">
+            <div class="dl-stat">
+              <div class="dl-stat-value">20M+</div>
+              <div class="dl-stat-label">Traumatic brain injuries per year worldwide.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">~50,000</div>
+              <div class="dl-stat-label">Cranioplasties per year — largest revenue share in the US.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">4–14 days</div>
+              <div class="dl-stat-label">To design and revise an implant by hand today.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">$3.5k – $53k</div>
+              <div class="dl-stat-label">Per-implant cost — wildly unequal across regions.</div>
+            </div>
+          </div>
+          <div class="dl-callout">
+            Complex post-traumatic defects often <strong>cannot be created by mirroring</strong> a healthy side of the skull. Suboptimal implants drive infections, fluid leakage, pressure-induced pain — and re-surgery.
+          </div>
+          <aside class="notes">
+            This is where the clinicians in the room lean in. Be precise. Pull from the CrAInial deck numbers but credit the source: cranial implant market data and our own clinical partners.
+          </aside>
+        </section>
+
+        <!-- Slide 24 — Why now -->
+        <section>
+          <span class="dl-eyebrow">Why this is solvable now (and not five years ago)</span>
+          <h2>Three curves crossed in 2024–2025.</h2>
+          <div class="dl-grid-3" style="margin-top:18px;">
+            <div class="dl-card">
+              <div class="dl-card-label">Models</div>
+              <h3>Point-cloud diffusion for shape</h3>
+              <p>Generative models now produce anatomically plausible 3D shapes conditioned on a defect — not just slices.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Agents</div>
+              <h3>Reliable tool-using LLMs</h3>
+              <p>Agentic AI can drive segmentation, reporting, and audit steps under clinician oversight.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Manufacturing</div>
+              <h3>Custom 3D-printed implants are routine</h3>
+              <p>~125k cranial reconstructions expected globally in 2025, with ~48% custom 3D-printed — the supply chain is ready.</p>
+            </div>
+          </div>
+          <aside class="notes">
+            Frame "why now" honestly. The model breakthroughs alone weren't enough. What changed is that the manufacturing and regulatory ecosystem matured around custom implants at the same time.
+          </aside>
+        </section>
+
+        <!-- ============================================================
+             ACT 5 — CRAINIAL & HUMAN-CENTRED AI
+             ============================================================ -->
+
+        <section class="dl-section">
+          <span class="dl-section-num">05 · CrAInial</span>
+          <h1>From a <span class="accent">defective scan</span> to a <span class="accent">3D-print-ready model</span>.</h1>
+          <p class="dl-section-sub">An agentic workflow with the surgeon in the loop — never out of it.</p>
+          <div class="dl-divider"></div>
+        </section>
+
+        <!-- Slide 26 — The workflow -->
+        <section>
+          <span class="dl-eyebrow">CrAInial workflow</span>
+          <h2>Five steps · one continuous clinical loop.</h2>
+          <div class="dl-flow" style="margin-top:18px;">
+            <div class="dl-step">
+              <span class="dl-step-num">01</span>
+              <strong>CT arrives</strong>
+              <div class="dl-step-desc">Patient scan enters the portal. Anonymised, audited, encrypted at rest.</div>
+            </div>
+            <div class="dl-step">
+              <span class="dl-step-num">02</span>
+              <strong>Clean &amp; segment</strong>
+              <div class="dl-step-desc">AI cleans artefacts, segments the skull, isolates the defect region.</div>
+            </div>
+            <div class="dl-step">
+              <span class="dl-step-num">03</span>
+              <strong>Generate implant</strong>
+              <div class="dl-step-desc">Point-cloud diffusion model proposes implant shapes, including non-mirrorable defects.</div>
+            </div>
+            <div class="dl-step">
+              <span class="dl-step-num">04</span>
+              <strong>Review &amp; refine</strong>
+              <div class="dl-step-desc">Surgeon and a 3D modeller refine the proposal together in the browser; surgeon signs off. Fixation plates suggested.</div>
+            </div>
+            <div class="dl-step">
+              <span class="dl-step-num">05</span>
+              <strong>Print-ready + report</strong>
+              <div class="dl-step-desc">STL/3D-print bundle + regulatory-compliant report exported for manufacturing.</div>
+            </div>
+          </div>
+          <div class="dl-callout">
+            <strong>Important — humans stay in the loop.</strong> The surgeon owns the clinical decision, and a 3D modeller / technical specialist still finalises the implant for print. CrAInial compresses the time between "scan received" and "print-ready" — for now it makes those people far faster, it does not replace them.
+          </div>
+          <aside class="notes">
+            This is the slide where every word matters to clinicians. Repeat: the surgeon owns the decision; a 3D modeller still finalises the geometry. The AI is a fast draftsman that speeds both of them up — it does not, today, remove the need for either.
+          </aside>
+        </section>
+
+        <!-- Slide — Model evolution: cran-1 → cran-2 -->
+        <section>
+          <span class="dl-eyebrow">Under the hood · two generations of models</span>
+          <h2>From <span class="accent">cran-1</span> to <span class="accent">cran-2</span>.</h2>
+          <div class="dl-grid-2" style="margin-top:16px;">
+            <div class="dl-card">
+              <div class="dl-card-label">Generation 1 · cran-1</div>
+              <h3>A two-stage geometric pipeline</h3>
+              <p>Point-cloud diffusion proposed the implant shape, then a separate voxelization model reconstructed a printable volume. Capable — but two heavy models to train, tune, and validate, with error compounding across the hand-off.</p>
+            </div>
+            <div class="dl-card accent">
+              <div class="dl-card-label">Generation 2 · cran-2 — running in the demo</div>
+              <h3>A single self-supervised model</h3>
+              <p>One self-supervised autoencoder learns to complete the missing skull region directly. Fewer moving parts, a much simpler pipeline to reason about — and far easier to validate for a medical device. Trained on the PERUN supercomputer.</p>
+            </div>
+          </div>
+          <div class="dl-stats dl-stats-3" style="margin-top:16px;">
+            <div class="dl-stat">
+              <div class="dl-stat-value">95%</div>
+              <div class="dl-stat-label">reconstruction accuracy with cran-2.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">4700×</div>
+              <div class="dl-stat-label">faster than the cran-1 diffusion + voxelization pipeline.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">2 → 1</div>
+              <div class="dl-stat-label">models — a single network replaces the dual-stage pipeline.</div>
+            </div>
+          </div>
+          <aside class="notes">
+            Tell the evolution honestly. cran-1 worked, but a two-model geometric pipeline (generate a point cloud, then voxelize into a solid) is hard to train and hard to certify — every stage is a separate failure mode and a separate validation argument. cran-2 collapses that into one self-supervised model that fills the defect directly: simpler, faster, and dramatically easier to build credibility evidence around. The headline numbers — 95% accuracy and a ~4700× speed-up over cran-1 — matter less than the architectural lesson: in a regulated setting, fewer moving parts is itself a feature. cran-2 is what you are about to see running in the demo.
+          </aside>
+        </section>
+
+        <!-- Slide — CrAInial live demo (video, full-bleed) -->
+        <section data-state="dl-video-slide">
+          <div class="dl-video-full">
+            <video
+              class="dl-video-el"
+              controls
+              playsinline
+              preload="metadata"
+              poster="assets/images/crainial-demo-poster.jpg">
+              <source src="assets/videos/crainial-cran-2-1080p.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <aside class="notes">
+            Play the video here. Narrate: this is the actual platform, not a mockup. Call out the moment the implant geometry is generated — emphasise the contrast with the 4–14 day manual turnaround we showed earlier. Then immediately re-anchor: faster is only valuable because it puts the decision back inside the clinical encounter.
+          </aside>
+        </section>
+
+        <!-- Slide — DimensionLab as an agentic organization -->
+        <section>
+          <span class="dl-eyebrow">How we build · DimensionLab as an agentic organization</span>
+          <h2>We rebuilt the company to run on <span class="accent">agents</span> — humans in the loop where it matters.</h2>
+          <p style="font-size:0.6em; color:var(--dl-muted); margin-top:10px;">Using <strong>Paperclip</strong> as a control plane, we wired our technical and go-to-market work into agentic systems that run continuously — with human sign-off at the decisions that count. The same autoresearch loop is what built cran-2.</p>
+          <div class="dl-grid-2" style="margin-top:12px; align-items:start;">
+            <ul class="dl-list-clean">
+              <li><strong>Autoresearch</strong> — agents read papers, propose architectures, and run ML experiments end-to-end (Karpathy-style autoresearch).</li>
+              <li><strong>CrAInial R&amp;D</strong> — agents orchestrated RunPod H200 training campaigns and SLURM autoresearch to iterate from cran-1 to cran-2.</li>
+            </ul>
+            <ul class="dl-list-clean">
+              <li><strong>Full SDLC + company "brain"</strong> — deploy models, manage a living knowledge base, answerable in Slack with the right context.</li>
+              <li><strong>Sales, marketing &amp; ops</strong> — pipelines, reporting, management — and a bridge to each teammate's own AI assistant.</li>
+            </ul>
+          </div>
+          <div class="dl-stats" style="margin-top:16px;">
+            <div class="dl-stat">
+              <div class="dl-stat-value">6.7B</div>
+              <div class="dl-stat-label">tokens observed across our agent fleet — including the autoresearch that built cran-2.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">5,610</div>
+              <div class="dl-stat-label">agent runs observed in the control plane.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">64d 10h</div>
+              <div class="dl-stat-label">continuous observation window of agent activity.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">7.1×</div>
+              <div class="dl-stat-label">more agent-authored comments than human (1,916 : 270).</div>
+            </div>
+          </div>
+          <aside class="notes">
+            This is the "Simulation to Agents" payoff of the title, placed right after the demo: the platform you just saw was built by an agentic organization. We didn't just add a chatbot — we restructured how the company operates. An agent owns a delegated loop (goal, context, tools, policy, memory) and escalates to a human when needed. A CEO agent sets direction; CTO / ML-Researcher agents split the experiments. For CrAInial they ran RunPod H200 training campaigns and used SLURM through autoresearch: baseline reproduction → architecture proposals → autoresearch sweeps → H200 training → final evaluation/packaging, evaluated on DSC, 10 mm bDSC, HD95, runtime, and GPU memory — roughly 500+ H200 GPU-hours and a ~12.9% best-reported loss lift. The numbers are observed in Paperclip run metadata (6.7B tokens on the DimensionLab instance), not a billing invoice. Humans stay in the loop for judgement and accountability.
+          </aside>
+        </section>
+
+        <!-- Slide — Physical validation prints -->
+        <section>
+          <div class="dl-grid-3-2">
+            <div class="dl-img-frame">
+              <img src="assets/images/crainial-test-prints.png" alt="Two 3D-printed skull models with generated cranial implant regions in red, printed for physical validation" />
+              <div class="dl-img-caption">Two test cases — 3D-printed skull models with generated implants (red), printed for physical validation.</div>
+            </div>
+            <div>
+              <span class="dl-eyebrow">Validation · from pixels to a part you can hold</span>
+              <h2>We print the cases, not just the slides.</h2>
+              <ul class="dl-list-clean" style="margin-top:14px;">
+                <li><strong>Physical fit checks</strong> — generated implants 3D-printed against patient-specific skull models.</li>
+                <li><strong>Closing the loop</strong> — geometry verified in the hand, not only on a screen.</li>
+              </ul>
+              <div class="dl-callout">
+                Trust at this stake is tactile. A surgeon should be able to hold the implant against the skull before it ever reaches an operating room.
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            Hold up or point to the prints. Make the link explicit: the red regions are AI-generated implant geometry, the white is the patient's printed skull model. This is part of how we build the credibility evidence that ASME V&amp;V 40 and our clinical partners expect — physical validation alongside computational validation.
+          </aside>
+        </section>
+
+        <!-- Slide 27 — Two portals -->
+        <section>
+          <span class="dl-eyebrow">CrAInial · one platform, two audiences</span>
+          <h2>Clinical teams and implant producers, in the same loop.</h2>
+          <div class="dl-grid-2" style="margin-top:18px;">
+            <div class="dl-card accent">
+              <div class="dl-card-label">Clinical portal</div>
+              <h3>Planning · segmentation · administration</h3>
+              <p>Surgeons and 3D modellers / clinical engineers upload scans, plan the surgery, refine and review implant proposals, and sign off on the design. Audit trail attached to every action.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Producer portal</div>
+              <h3>Generate · review · print</h3>
+              <p>Implant producers receive print-ready geometry, fixation plate suggestions, and a regulation-aligned report ready for the device file.</p>
+            </div>
+          </div>
+          <aside class="notes">
+            The product's job is to keep these two audiences synchronised without inventing a new clinical authority.
+          </aside>
+        </section>
+
+        <!-- Slide 28 — Human-in-the-loop principles -->
+        <section>
+          <span class="dl-eyebrow">Designing for clinician authority</span>
+          <h2>Four human-in-the-loop principles.</h2>
+          <ul class="dl-list-clean" style="margin-top:14px;">
+            <li><strong>Surface uncertainty, don't hide it.</strong> Every generated geometry ships with a confidence and provenance trail.</li>
+            <li><strong>Keep a 3D modeller in the loop.</strong> The surgeon directs clinical intent; a technical 3D specialist — in-house or partner — finalises the geometry for print. Our tooling makes that iteration loop dramatically faster; for now it does not remove the human.</li>
+            <li><strong>Never auto-submit.</strong> No print is dispatched without explicit clinician sign-off and identity logging.</li>
+            <li><strong>Explainability is a UI, not a paper.</strong> Show <em>which</em> anatomical neighbourhood drove which decision.</li>
+          </ul>
+          <aside class="notes">
+            Tie these back to HERO's "human-centred and ethical robotics" framing explicitly — the same principles apply when the device is an implant rather than a robot.
+          </aside>
+        </section>
+
+        <!-- Slide 29 — Trust stack -->
+        <section>
+          <span class="dl-eyebrow">The trust stack we are building</span>
+          <h2>Regulation is not a checkbox. It is the architecture.</h2>
+          <div class="dl-grid-4" style="margin-top:18px;">
+            <div class="dl-card">
+              <div class="dl-card-label">Software</div>
+              <h3>IEC 62304</h3>
+              <p>Medical device software lifecycle.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Quality</div>
+              <h3>ISO 13485</h3>
+              <p>Quality management for medical devices.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Market</div>
+              <h3>FDA pathway</h3>
+              <p>US 510(k) / De Novo strategy in scope.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Models</div>
+              <h3>ASME V&amp;V 40</h3>
+              <p>Credibility evidence for computational models in medical devices.</p>
+            </div>
+          </div>
+          <div class="dl-callout">
+            <strong>What this means in practice.</strong> Every model, dataset, and pipeline change is versioned, reproducible, and reviewable. The engineering team and the regulatory team share the same source of truth.
+          </div>
+          <aside class="notes">
+            Mention that ASME V&V 40 in particular maps surprisingly well onto good ML engineering — model risk framing, context of use, and credibility evidence are exactly what production ML teams need anyway.
+          </aside>
+        </section>
+
+        <!-- Slide 30 — Equity -->
+        <section>
+          <span class="dl-eyebrow">Equity as a design constraint</span>
+          <h2>$3,500 in Mumbai. $53,000 in Boston. Same defect.</h2>
+          <div class="dl-grid-2" style="margin-top:18px;">
+            <div>
+              <ul class="dl-list-clean">
+                <li><strong>Cost of an implant</strong> varies more than 10× across regions today.</li>
+                <li><strong>Design time of 4–14 days</strong> excludes the patients who need a decision fastest.</li>
+                <li><strong>AI generation collapses the marginal design cost</strong> — opening pricing models that don't punish low-income systems.</li>
+              </ul>
+            </div>
+            <div>
+              <div class="dl-callout">
+                We treat <strong>equitable access</strong> as a first-class product requirement: tiered pricing, hospital-side deployment options, and partnerships that respect local manufacturing capacity.
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            Connect to AWAKE's equity emphasis explicitly. Be honest: we are not the ones building the implants — we are the ones lowering the design barrier so that more local manufacturers can serve their populations.
+          </aside>
+        </section>
+
+        <!-- Slide 31 — Partners -->
+        <section>
+          <span class="dl-eyebrow">Built with, not for</span>
+          <h2>Clinicians, engineers, manufacturers — at the same table.</h2>
+          <div class="dl-grid-3" style="margin-top:18px;">
+            <div class="dl-card">
+              <div class="dl-card-label">Clinical &amp; biomedical</div>
+              <h3>Biomedical Engineering s.r.o.</h3>
+              <p>Strategic advisor and "Manufacturing hospital" E2E integration partner. Prof. Radovan Hudák, biomedical engineering pioneer at TU Košice.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Research</div>
+              <h3>Clinical datasets &amp; HPC</h3>
+              <p>Curated defective-skull datasets, joint validation work, access to academic HPC for training.</p>
+            </div>
+            <div class="dl-card">
+              <div class="dl-card-label">Manufacturing</div>
+              <h3>3D-print integrations</h3>
+              <p>Bridging our outputs into existing certified implant manufacturing workflows.</p>
+            </div>
+          </div>
+          <aside class="notes">
+            Stress that no part of this works without clinical co-design. The Ulysseus framing — transdisciplinary teams — is literally how this product is being built.
+          </aside>
+        </section>
+
+        <!-- Slide 32 — Where DimensionLab is now -->
+        <section>
+          <span class="dl-eyebrow">Where we are today</span>
+          <h2>Smaller surface. Sharper edge.</h2>
+          <div class="dl-stats" style="margin-top:14px;">
+            <div class="dl-stat">
+              <div class="dl-stat-value">€970k</div>
+              <div class="dl-stat-label">Raised to date (VC + grants), across Siml.ai &amp; CrAInial.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">$3M</div>
+              <div class="dl-stat-label">Seed round planned — team, US presence, regulatory.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">~$1.6B</div>
+              <div class="dl-stat-label">Cranial implants market today (~7% CAGR) — first beachhead.</div>
+            </div>
+            <div class="dl-stat">
+              <div class="dl-stat-value">~$50B</div>
+              <div class="dl-stat-label">Adjacent maxillofacial + orthopaedic implant market — next steps.</div>
+            </div>
+          </div>
+          <aside class="notes">
+            Keep this slide humble. The numbers are real, but the audience is academic — lead with what the numbers fund (regulatory, AI R&D, US presence), not the size of the cheque.
+          </aside>
+        </section>
+
+        <!-- ============================================================
+             ACT 6 — CLOSING
+             ============================================================ -->
+
+        <!-- Thank you / contact -->
+        <section data-state="dl-title">
+          <div class="dl-hero">
+            <span class="dl-eyebrow">Thank you</span>
+            <h1>Let's build the next chapter <span class="accent">together</span>.</h1>
+            <p class="dl-byline">If you are a clinician, engineer, or student working on AI for surgery, ageing, or human-centred care — we want to hear from you.</p>
+            <div class="dl-meta-row">
+              <span><strong>hello@dimensionlab.org</strong><br/>dimensionlab.org</span>
+              <span><strong>Michal Takáč</strong><br/>linkedin.com/in/michaltakac</span>
+              <span><strong>Slides</strong><br/>Available after the session</span>
+            </div>
+          </div>
+          <aside class="notes">
+            Thank the Ulysseus organisers explicitly. Invite questions afterwards by email — many of the best collaborations have started from a single post-talk message.
+          </aside>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Reveal core + plugins -->
+    <script src="vendor/reveal.js/dist/reveal.js"></script>
+    <script src="vendor/reveal.js/plugin/notes/notes.js"></script>
+    <script src="vendor/reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="vendor/reveal.js/plugin/search/search.js"></script>
+
+    <script>
+
+      Reveal.initialize({
+        hash: true,
+        slideNumber: false,
+        controls: false,
+        progress: true,
+        center: true,
+        transition: 'fade',
+        transitionSpeed: 'default',
+        backgroundTransition: 'fade',
+        width: 1440,
+        height: 900,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0,
+        pdfSeparateFragments: false,
+        plugins: [RevealNotes, RevealHighlight, RevealSearch]
+      });
+
+      // Custom slide counter wired into the footer
+      const dlCurrent = document.getElementById('dl-current');
+      const dlTotal = document.getElementById('dl-total');
+      function updateSlideNumber() {
+        const indices = Reveal.getIndices();
+        const total = Reveal.getTotalSlides();
+        if (dlCurrent) dlCurrent.textContent = String(indices.h + 1);
+        if (dlTotal) dlTotal.textContent = String(total);
+      }
+      Reveal.on('ready', updateSlideNumber);
+      Reveal.on('slidechanged', updateSlideNumber);
+
+      // Pause the demo video when navigating away from its slide
+      Reveal.on('slidechanged', function () {
+        document.querySelectorAll('.dl-video-el').forEach(function (v) {
+          var onActive = v.closest('section.present');
+          if (!onActive && !v.paused) v.pause();
+        });
+      });
+    </script>
+  </body>
+</html>
