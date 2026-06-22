@@ -205,6 +205,145 @@
           </aside>
         </section>
 
+        <!-- Slide 9b — Architecture diagrams: PINN / FNO / MeshGraphNet -->
+        <section>
+          <span class="dl-eyebrow">Architectures we use · how the physics enters the model</span>
+          <h2>Three ways to put <span class="accent">structure</span> in the network.</h2>
+          <div class="dl-grid-3" style="margin-top:16px;">
+
+            <!-- PINN -->
+            <div class="dl-card">
+              <div class="dl-card-label">PINN</div>
+              <h3>Physics-informed neural network</h3>
+              <svg viewBox="0 0 380 220" width="100%" style="display:block; height:auto; margin-top:8px;" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PINN architecture diagram">
+                <defs>
+                  <marker id="ah-pinn" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8b5cf6"/></marker>
+                </defs>
+                <!-- input -->
+                <rect x="4" y="44" width="50" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+                <text x="29" y="64" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="14" fill="#0f172a">x, t</text>
+                <line x1="54" y1="60" x2="78" y2="60" stroke="#8b5cf6" stroke-width="2" marker-end="url(#ah-pinn)"/>
+                <!-- MLP edges -->
+                <g stroke="#e2e8f0" stroke-width="1">
+                  <line x1="96" y1="42" x2="136" y2="33"/><line x1="96" y1="42" x2="136" y2="51"/><line x1="96" y1="42" x2="136" y2="69"/><line x1="96" y1="42" x2="136" y2="87"/>
+                  <line x1="96" y1="60" x2="136" y2="33"/><line x1="96" y1="60" x2="136" y2="51"/><line x1="96" y1="60" x2="136" y2="69"/><line x1="96" y1="60" x2="136" y2="87"/>
+                  <line x1="96" y1="78" x2="136" y2="33"/><line x1="96" y1="78" x2="136" y2="51"/><line x1="96" y1="78" x2="136" y2="69"/><line x1="96" y1="78" x2="136" y2="87"/>
+                  <line x1="136" y1="33" x2="176" y2="42"/><line x1="136" y1="33" x2="176" y2="60"/><line x1="136" y1="33" x2="176" y2="78"/>
+                  <line x1="136" y1="51" x2="176" y2="42"/><line x1="136" y1="51" x2="176" y2="60"/><line x1="136" y1="51" x2="176" y2="78"/>
+                  <line x1="136" y1="69" x2="176" y2="42"/><line x1="136" y1="69" x2="176" y2="60"/><line x1="136" y1="69" x2="176" y2="78"/>
+                  <line x1="136" y1="87" x2="176" y2="42"/><line x1="136" y1="87" x2="176" y2="60"/><line x1="136" y1="87" x2="176" y2="78"/>
+                </g>
+                <!-- MLP nodes -->
+                <g fill="#ffffff" stroke="#4f46e5" stroke-width="2">
+                  <circle cx="96" cy="42" r="6.5"/><circle cx="96" cy="60" r="6.5"/><circle cx="96" cy="78" r="6.5"/>
+                  <circle cx="136" cy="33" r="6.5"/><circle cx="136" cy="51" r="6.5"/><circle cx="136" cy="69" r="6.5"/><circle cx="136" cy="87" r="6.5"/>
+                  <circle cx="176" cy="42" r="6.5"/><circle cx="176" cy="60" r="6.5"/><circle cx="176" cy="78" r="6.5"/>
+                </g>
+                <text x="136" y="112" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#475569">fully-connected NN</text>
+                <line x1="184" y1="60" x2="208" y2="60" stroke="#8b5cf6" stroke-width="2" marker-end="url(#ah-pinn)"/>
+                <!-- output -->
+                <rect x="208" y="44" width="74" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+                <text x="245" y="64" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="14" fill="#0f172a">û(x, t)</text>
+                <!-- autograd derivatives down to loss -->
+                <line x1="245" y1="76" x2="245" y2="156" stroke="#c026d3" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#ah-pinn)"/>
+                <text x="252" y="108" font-family="Inter, sans-serif" font-size="10.5" fill="#c026d3">∂û/∂x, ∂û/∂t</text>
+                <text x="252" y="122" font-family="Inter, sans-serif" font-size="10.5" fill="#c026d3">(autograd)</text>
+                <!-- loss bar -->
+                <rect x="14" y="160" width="352" height="46" rx="9" fill="rgba(139,92,246,0.10)" stroke="#8b5cf6"/>
+                <text x="190" y="182" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" fill="#0f172a">ℒ = ℒ_data + λ₁ℒ_PDE + λ₂ℒ_BC/IC</text>
+                <text x="190" y="198" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#475569">PDE residual baked into the loss</text>
+              </svg>
+              <p style="margin-top:10px;">Best when the governing PDE is known — Navier–Stokes, elasticity, heat.</p>
+            </div>
+
+            <!-- FNO -->
+            <div class="dl-card">
+              <div class="dl-card-label">FNO</div>
+              <h3>Fourier neural operator</h3>
+              <svg viewBox="0 0 380 220" width="100%" style="display:block; height:auto; margin-top:8px;" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fourier neural operator architecture diagram">
+                <defs>
+                  <marker id="ah-fno" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8b5cf6"/></marker>
+                </defs>
+                <!-- input -->
+                <rect x="6" y="84" width="52" height="34" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+                <text x="32" y="105" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="14" fill="#0f172a">a(x)</text>
+                <line x1="58" y1="101" x2="72" y2="101" stroke="#8b5cf6" stroke-width="2" marker-end="url(#ah-fno)"/>
+                <!-- lift P -->
+                <rect x="72" y="84" width="32" height="34" rx="8" fill="#ffffff" stroke="#4f46e5"/>
+                <text x="88" y="105" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="14" fill="#0f172a">P</text>
+                <text x="88" y="132" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#475569">lift</text>
+                <line x1="104" y1="101" x2="120" y2="101" stroke="#8b5cf6" stroke-width="2" marker-end="url(#ah-fno)"/>
+                <!-- Fourier layer block -->
+                <rect x="120" y="54" width="156" height="96" rx="11" fill="rgba(139,92,246,0.10)" stroke="#8b5cf6" stroke-dasharray="5 3"/>
+                <text x="198" y="72" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#6d28d9">Fourier layer · ×L</text>
+                <text x="198" y="98" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13.5" fill="#0f172a">FFT → ·R_k → IFFT</text>
+                <text x="198" y="120" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13.5" fill="#0f172a">⊕  W  (skip)</text>
+                <text x="198" y="140" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" fill="#475569">then σ (nonlinearity)</text>
+                <line x1="276" y1="101" x2="292" y2="101" stroke="#8b5cf6" stroke-width="2" marker-end="url(#ah-fno)"/>
+                <!-- project Q -->
+                <rect x="292" y="84" width="32" height="34" rx="8" fill="#ffffff" stroke="#4f46e5"/>
+                <text x="308" y="105" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="14" fill="#0f172a">Q</text>
+                <text x="308" y="132" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#475569">project</text>
+                <line x1="324" y1="101" x2="338" y2="101" stroke="#8b5cf6" stroke-width="2" marker-end="url(#ah-fno)"/>
+                <!-- output -->
+                <rect x="324" y="84" width="52" height="34" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+                <text x="350" y="105" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="14" fill="#0f172a">u(x)</text>
+                <text x="190" y="184" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#475569">global spectral convolution on low Fourier modes</text>
+              </svg>
+              <p style="margin-top:10px;">Learns a resolution-independent operator between function spaces — fast across families of conditions.</p>
+            </div>
+
+            <!-- MeshGraphNet -->
+            <div class="dl-card">
+              <div class="dl-card-label">MeshGraphNet</div>
+              <h3>Graph network on the mesh</h3>
+              <svg viewBox="0 0 380 220" width="100%" style="display:block; height:auto; margin-top:8px;" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MeshGraphNet architecture diagram">
+                <defs>
+                  <marker id="ah-mgn" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8b5cf6"/></marker>
+                </defs>
+                <!-- input mesh / graph -->
+                <g stroke="#94a3b8" stroke-width="1.4">
+                  <line x1="20" y1="80" x2="58" y2="66"/><line x1="20" y1="80" x2="42" y2="108"/><line x1="58" y1="66" x2="42" y2="108"/>
+                  <line x1="58" y1="66" x2="82" y2="100"/><line x1="42" y1="108" x2="82" y2="100"/><line x1="42" y1="108" x2="28" y2="142"/>
+                  <line x1="42" y1="108" x2="66" y2="142"/><line x1="28" y1="142" x2="66" y2="142"/><line x1="82" y1="100" x2="66" y2="142"/>
+                </g>
+                <g fill="#8b5cf6">
+                  <circle cx="20" cy="80" r="5"/><circle cx="58" cy="66" r="5"/><circle cx="42" cy="108" r="5"/><circle cx="82" cy="100" r="5"/><circle cx="28" cy="142" r="5"/><circle cx="66" cy="142" r="5"/>
+                </g>
+                <text x="50" y="166" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#475569">simulation mesh</text>
+                <line x1="92" y1="104" x2="106" y2="104" stroke="#8b5cf6" stroke-width="2" marker-end="url(#ah-mgn)"/>
+                <!-- encoder -->
+                <rect x="106" y="84" width="56" height="40" rx="8" fill="#ffffff" stroke="#4f46e5"/>
+                <text x="134" y="100" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#0f172a">Encoder</text>
+                <text x="134" y="114" text-anchor="middle" font-family="Inter, sans-serif" font-size="9.5" fill="#475569">node + edge</text>
+                <line x1="162" y1="104" x2="176" y2="104" stroke="#8b5cf6" stroke-width="2" marker-end="url(#ah-mgn)"/>
+                <!-- processor -->
+                <rect x="176" y="74" width="98" height="60" rx="10" fill="rgba(139,92,246,0.10)" stroke="#8b5cf6"/>
+                <text x="225" y="98" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#6d28d9">Processor</text>
+                <text x="225" y="114" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#0f172a">message passing</text>
+                <text x="225" y="127" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#475569">×L steps</text>
+                <line x1="274" y1="104" x2="288" y2="104" stroke="#8b5cf6" stroke-width="2" marker-end="url(#ah-mgn)"/>
+                <!-- decoder -->
+                <rect x="288" y="84" width="56" height="40" rx="8" fill="#ffffff" stroke="#4f46e5"/>
+                <text x="316" y="100" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#0f172a">Decoder</text>
+                <text x="316" y="114" text-anchor="middle" font-family="Inter, sans-serif" font-size="9.5" fill="#475569">per-node</text>
+                <!-- output -->
+                <line x1="316" y1="124" x2="316" y2="150" stroke="#8b5cf6" stroke-width="2" marker-end="url(#ah-mgn)"/>
+                <text x="316" y="170" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" fill="#0f172a">u(t+Δt)</text>
+                <text x="316" y="186" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#475569">next state on mesh</text>
+              </svg>
+              <p style="margin-top:10px;">Learns dynamics directly on irregular meshes — strong on complex, deforming geometry.</p>
+            </div>
+
+          </div>
+          <div class="dl-callout">
+            <strong>Same principle, three priors.</strong> PINNs encode the equation in the loss, FNOs learn the solution operator in Fourier space, and MeshGraphNets learn dynamics on the mesh itself — we pick the prior that fits the problem's physics, geometry, and data.
+          </div>
+          <aside class="notes">
+            Keep this fast — it is a map, not a lecture. One line each: PINNs bake the PDE residual into the loss (great when the equations are known); FNOs learn a mesh-free operator between function spaces via spectral convolutions (great for parametric families and super-resolution); MeshGraphNets run encode–process–decode message passing on the simulation mesh (great for complex, deforming geometry where a fixed grid fails). The takeaway for the room: these are not black boxes — each carries an explicit inductive bias we can reason about, which is exactly what earns trust later in the regulated medical setting.
+          </aside>
+        </section>
+
         <!-- Slide 10 — Model Engineer -->
         <section>
           <div class="dl-grid-2">
@@ -274,7 +413,7 @@
             </div>
           </div>
           <div class="dl-callout">
-            Lesson for builders in the room: a deep-tech platform is <strong>at least three products in a trench coat</strong> — a frontend, a backend, and a compute fabric. Each one has its own users and its own failure modes.
+            Lesson for builders in the room: a deep-tech platform is <strong>at least three products in a trench coat</strong> — a frontend, a backend, and a compute fabric.
           </div>
           <aside class="notes">
             Mention briefly that this is the architecture audience members can find in our public simlai-docs repository if they want to study it. Don't oversell — be honest about complexity.
@@ -316,7 +455,7 @@
           <div class="dl-grid-2-3">
             <div>
               <span class="dl-eyebrow">Case · biomechanics engineering</span>
-              <h2>Bone-fixator stress, in milliseconds.</h2>
+              <h2>Bone-fixator Von-Mises stress.</h2>
               <ul class="dl-list-clean" style="margin-top:14px;">
                 <li><strong>~1000× faster</strong> than the FEM baseline the engineering team relied on.</li>
                 <li><strong>~98% cost reduction</strong> per design iteration.</li>
@@ -345,7 +484,7 @@
             </div>
             <div>
               <span class="dl-eyebrow">Case · cardiovascular research</span>
-              <h2>Aneurysm haemodynamics on demand.</h2>
+              <h2>Aneurysm hemodynamics on demand.</h2>
               <ul class="dl-list-clean" style="margin-top:14px;">
                 <li><strong>Anatomical geometry</strong> from segmented CT — the same data pipeline we would later reuse for CrAInial.</li>
                 <li><strong>Trained once</strong> on a parameterised family — inferred per geometry in seconds.</li>
@@ -360,26 +499,35 @@
 
         <!-- Slide 16 — Customer voice -->
         <section>
-          <div class="dl-grid-2-3">
+          <span class="dl-eyebrow">Case · small hydropower plant · RFB s.r.o.</span>
+          <div class="dl-grid-2-3" style="align-items:center;">
             <div>
-              <div class="dl-bigquote">
+              <div class="dl-bigquote" style="font-size:0.92em; padding:26px 30px;">
                 <p>"What used to take us <span class="accent">four years in ANSYS</span> we did with <span class="accent">six AI simulators in three weeks</span> — 100 compute hours per iteration collapsed to six seconds."</p>
                 <div class="dl-bigquote-cite">— Pavol Breza, RFB s.r.o. (river hydroplant simulator)</div>
               </div>
-            </div>
-            <div>
-              <ul class="dl-list-clean">
+              <ul class="dl-list-clean" style="margin-top:12px;">
                 <li><strong>~96% cost reduction</strong> on the simulation work for the project.</li>
                 <li><strong>Iteration time</strong> went from weeks to single working sessions.</li>
                 <li><strong>Trust came from validation</strong> against the original ANSYS runs they already owned.</li>
               </ul>
-              <div class="dl-callout">
-                Trust is not built by a faster number. It is built by showing the same answer faster than the tool they already believe.
+            </div>
+            <div class="dl-grid-2" style="gap:12px;">
+              <div class="dl-img-frame">
+                <img src="assets/images/rfb-hydropower-vector-field.jpeg" alt="Velocity vector field of water flow through the hydropower plant intake, predicted by an AI simulator" />
+                <div class="dl-img-caption">Velocity vector field through the intake — AI simulator inference.</div>
+              </div>
+              <div class="dl-img-frame">
+                <img src="assets/images/rfb-hydropower-streamlines.png" alt="Streamlines of water flow in the small hydropower plant, coloured by velocity magnitude" />
+                <div class="dl-img-caption">Flow streamlines, coloured by velocity magnitude.</div>
               </div>
             </div>
           </div>
+          <div class="dl-callout">
+            Trust is not built by a faster number. It is built by showing the accurate answer faster than the tool they already believe, consistently.
+          </div>
           <aside class="notes">
-            Use the quote to introduce the trust theme that we'll come back to at the end with regulation. This is also a candid lesson: in deep tech, your reference customers' incumbent tools are part of your trust chain — you must validate against them.
+            Use the quote to introduce the trust theme that we'll come back to at the end with regulation. The two visuals are from Pavol Breza's small-hydropower work at RFB s.r.o. — the AI simulators reproduced the flow field (vector field and streamlines) that previously came from long ANSYS runs. The candid lesson: in deep tech, your reference customers' incumbent tools are part of your trust chain — you must validate against them.
           </aside>
         </section>
 
@@ -391,7 +539,7 @@
             <div>
               <ul class="dl-list-clean">
                 <li><strong>2,400+ registered users</strong> by end of 2024 — meaningful early-adopter density.</li>
-                <li><strong>Paying customers in EU industry</strong> — hydropower, structural, biomedical.</li>
+                <li><strong>Paying customers in multiple industries</strong> — hydropower, structural, biomedical.</li>
                 <li><strong>~€40k revenue in 2024</strong> — real money, not a venture-scale trajectory yet.</li>
                 <li><strong>€970k raised</strong> (pre-seed + grants) across the Siml.ai chapter.</li>
               </ul>
@@ -481,7 +629,7 @@
         <!-- Slide 23 — Why cranial implants -->
         <section>
           <span class="dl-eyebrow">Why cranial implants · why now</span>
-          <h2>A clinical workflow that almost everyone gets wrong.</h2>
+          <h2>A clinical workflow of cranial implants.</h2>
           <div class="dl-stats dl-stats-sm" style="margin-top:14px; grid-template-columns: 0.8fr 0.95fr 1.05fr 1.25fr; gap:18px;">
             <div class="dl-stat">
               <div class="dl-stat-value">20M+</div>
@@ -687,6 +835,7 @@
               <ul class="dl-list-clean" style="margin-top:14px;">
                 <li><strong>Physical fit checks</strong> — generated implants 3D-printed against patient-specific skull models.</li>
                 <li><strong>Closing the loop</strong> — geometry verified in the hand, not only on a screen.</li>
+                <li><strong>Production-grade materials</strong> — validating generated implants by printing in Titanium and PEEK, in collaboration with Biomedical Engineering s.r.o.</li>
               </ul>
               <div class="dl-callout">
                 Trust at this stake is tactile. A surgeon should be able to hold the implant against the skull before it ever reaches an operating room.
@@ -722,11 +871,12 @@
         <!-- Slide 28 — Human-in-the-loop principles -->
         <section>
           <span class="dl-eyebrow">Designing for clinician authority</span>
-          <h2>Four human-in-the-loop principles.</h2>
+          <h2>Five human-in-the-loop principles.</h2>
           <ul class="dl-list-clean" style="margin-top:14px;">
             <li><strong>Surface uncertainty, don't hide it.</strong> Every generated geometry ships with a confidence and provenance trail.</li>
             <li><strong>Keep a 3D modeller in the loop.</strong> The surgeon directs clinical intent; a technical 3D specialist — in-house or partner — finalises the geometry for print. Our tooling makes that iteration loop dramatically faster; for now it does not remove the human.</li>
             <li><strong>Never auto-submit.</strong> No print is dispatched without explicit clinician sign-off and identity logging.</li>
+            <li><strong>Automate the paperwork, not the judgement.</strong> Medical reports and administration that must pass the regulatory framework are automated through an integrated reporting agent with access to the full patient implant pipeline.</li>
             <li><strong>Explainability is a UI, not a paper.</strong> Show <em>which</em> anatomical neighbourhood drove which decision.</li>
           </ul>
           <aside class="notes">
